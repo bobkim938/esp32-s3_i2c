@@ -1,9 +1,19 @@
 #include <stdio.h>
 #include "driver/i2c.h"
+#include "esp_log.h"
+#include <freertos/FreeRTOS.h>
 
-#define I2C_M_SDA GPIO_NUM_8
-#define I2C_M_SCL GPIO_NUM_9
+#define I2C_M_SDA GPIO_NUM_18
+#define I2C_M_SCL GPIO_NUM_19
 #define I2C_clk_speed 100000
+
+#define I2C_MASTER_NUM I2C_NUM_0
+#define I2C_MASTER_TX_BUF_DISABLE 0
+#define I2C_MASTER_RX_BUF_DISABLE 0
+
+#define esp_slv_addr 
+
+static const char *TAG = "i2c-master";
 
 static esp_err_t i2c_master_init(void)
 {
@@ -20,7 +30,7 @@ static esp_err_t i2c_master_init(void)
 
     i2c_param_config(i2c_master_port, &config);
 
-    return i2c_driver_install(i2c_master_port, conf.mode, I2C_MASTER_RX_BUF_DISABLE, I2C_MASTER_TX_BUF_DISABLE, 0);
+    return i2c_driver_install(i2c_master_port, config.mode, I2C_MASTER_RX_BUF_DISABLE, I2C_MASTER_TX_BUF_DISABLE, 0);
 }
 
 
