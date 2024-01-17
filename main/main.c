@@ -57,7 +57,7 @@ static esp_err_t i2c_master_send(uint8_t message[], int len)
 
 void app_main(void)
 {
-    printf("Hello world!\n");
+    printf("Initiating\n");
     const uint8_t  on_command[] = "LED_ON";
     const uint8_t  off_command[] = "LED_OFF";
     ESP_ERROR_CHECK(i2c_master_init());
