@@ -14,7 +14,7 @@
     "idf.pythonBinPath": "/home/bob/.espressif/python_env/idf5.1_py3.10_env/bin/python",
     "idf.toolsPath": "/home/bob/.espressif",
     "idf.flashType": "UART",
-    "idf.port": "/dev/ttyACM0",
+    "idf.port": "/dev/ttyUSB1",
     "files.associations": {
         "freertos.h": "c"
     }

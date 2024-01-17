@@ -3,11 +3,8 @@
 #include "esp_log.h"
 #include "driver/i2c.h"
 
-static const char *TAG = "i2c-master";
-
-
-#define I2C_MASTER_SCL_IO 22               /*!< gpio number for I2C master clock */
-#define I2C_MASTER_SDA_IO 21               /*!< gpio number for I2C master data  */
+#define I2C_MASTER_SDA_IO 18               /*!< gpio number for I2C master data  */
+#define I2C_MASTER_SCL_IO 19               /*!< gpio number for I2C master clock */
 #define I2C_MASTER_FREQ_HZ 100000        /*!< I2C master clock frequency */
 #define I2C_MASTER_TX_BUF_DISABLE 0                           /*!< I2C master doesn't need buffer */
 #define I2C_MASTER_RX_BUF_DISABLE 0                           /*!< I2C master doesn't need buffer */
@@ -19,6 +16,8 @@ static const char *TAG = "i2c-master";
 #define ACK_CHECK_DIS 0x0                       /*!< I2C master will not check ack from slave */
 #define ACK_VAL 0x0                             /*!< I2C ack value */
 #define NACK_VAL 0x1                            /*!< I2C nack value */
+
+static const char *TAG = "i2c-master";
 
 int i2c_master_port = 0;
 static esp_err_t i2c_master_init(void)
@@ -33,11 +32,11 @@ static esp_err_t i2c_master_init(void)
         .master.clk_speed = I2C_MASTER_FREQ_HZ,
         // .clk_flags = 0,          /*!< Optional, you can use I2C_SCLK_SRC_FLAG_* flags to choose i2c source clock here. */
     };
-    esp_err_t err = i2c_param_config(i2c_master_port, &conf);
+    esp_err_t err = i2c_param_config(i2c_master_port, &conf); // i2c parameters initialization
     if (err != ESP_OK) {
         return err;
     }
-    return i2c_driver_install(i2c_master_port, conf.mode, I2C_MASTER_RX_BUF_DISABLE, I2C_MASTER_TX_BUF_DISABLE, 0);
+    return i2c_driver_install(i2c_master_port, conf.mode, I2C_MASTER_RX_BUF_DISABLE, I2C_MASTER_TX_BUF_DISABLE, 0); // i2c driver installation (last parameter: interrupt)
 }
 
 static esp_err_t i2c_master_send(uint8_t message[], int len)
@@ -45,10 +44,10 @@ static esp_err_t i2c_master_send(uint8_t message[], int len)
     ESP_LOGI(TAG, "Sending Message = %s", message);   
     
     esp_err_t ret; 
-    i2c_cmd_handle_t cmd = i2c_cmd_link_create();    
-    i2c_master_start(cmd);
-    i2c_master_write_byte(cmd, SLAVE_ADDRESS << 1 | WRITE_BIT, ACK_CHECK_EN);
-    i2c_master_write(cmd, message, len, ACK_CHECK_EN);
+    i2c_cmd_handle_t cmd = i2c_cmd_link_create(); // create i2c command handle    
+    i2c_master_start(cmd); // Add start and stop conditions to the I2C command sequence
+    i2c_master_write_byte(cmd, SLAVE_ADDRESS << 1 | WRITE_BIT, ACK_CHECK_EN); // Add write commands to the I2C command sequence
+    i2c_master_write(cmd, message, len, ACK_CHECK_EN); // master write buffer to the i2c bus
     i2c_master_stop(cmd);
     
     ret = i2c_master_cmd_begin(i2c_master_port, cmd, 1000 / portTICK_PERIOD_MS);
@@ -58,6 +57,7 @@ static esp_err_t i2c_master_send(uint8_t message[], int len)
 
 void app_main(void)
 {
+    printf("Hello world!\n");
     const uint8_t  on_command[] = "LED_ON";
     const uint8_t  off_command[] = "LED_OFF";
     ESP_ERROR_CHECK(i2c_master_init());
@@ -70,5 +70,4 @@ void app_main(void)
         i2c_master_send(off_command, sizeof(off_command));
         vTaskDelay(1000/ portTICK_PERIOD_MS);  
     }
-    
 }
