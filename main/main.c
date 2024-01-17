@@ -8,10 +8,11 @@
 #define I2C_MASTER_FREQ_HZ 100000 // master clock frequency
 #define I2C_MASTER_TX_BUF_DISABLE 0
 #define I2C_MASTER_RX_BUF_DISABLE 0      
-#define slave_addr_esp 0x0A
 
 #define WRITE_BIT I2C_MASTER_WRITE // master write
 #define READ_BIT I2C_MASTER_READ // master read
+
+#define slave_addr_esp 0x0A
 #define ACK_CHECK_EN 0x1                        
 #define ACK_CHECK_DIS 0x0                      
 #define ACK_VAL 0x0                            
@@ -60,7 +61,6 @@ static esp_err_t i2c_master_read_slave(uint8_t *data_rd, size_t size, i2c_port_t
 static esp_err_t i2c_master_send(uint8_t* message, size_t size, i2c_port_t i2c_num)
 {
     ESP_LOGI(TAG, "Sending Message = %d", *message);;   
-
     esp_err_t ret; 
     i2c_cmd_handle_t cmd = i2c_cmd_link_create(); // create i2c command handle    
     i2c_master_start(cmd); // Add start and stop conditions to the I2C command sequence
@@ -75,14 +75,27 @@ static esp_err_t i2c_master_send(uint8_t* message, size_t size, i2c_port_t i2c_n
 
 void app_main(void)
 {
-    printf("Initiating Communication\n");
     uint8_t ping = 0;
+    uint8_t pong[255] = {0};
     ESP_ERROR_CHECK(i2c_master_init());
-    ESP_LOGI(TAG, "I2C initialized successfully");
+    ESP_LOGI(TAG, "I2C initialized");
 
-    while(1)
+  while(1)
     {
+        // Sending data
         i2c_master_send(&ping, sizeof(ping), 0);
-        vTaskDelay(1000/ portTICK_PERIOD_MS);
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
+
+        // Reading data
+        esp_err_t read_result = i2c_master_read_slave(pong, sizeof(pong), 0);
+        if (read_result == ESP_OK)
+        {
+            ESP_LOGI(TAG, "Received Data: %d", *pong);
+        }
+        else
+        {
+            ESP_LOGE(TAG, "Error reading from slave: %d", read_result);
+        }
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
 }
