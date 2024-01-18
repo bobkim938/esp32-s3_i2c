@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <string.h>
 #include "esp_log.h"
-#include "driver/i2c.h"\
+#include "esp_system.h"
+#include "driver/i2c.h"
+
 
 #define I2C_MASTER_SDA_IO 18 // SDA GPIO_18
 #define I2C_MASTER_SCL_IO 19 // SCL GPIO_19
