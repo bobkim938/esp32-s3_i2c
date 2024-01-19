@@ -24,7 +24,6 @@ static const char *TAG = "i2c-master";
 
 static esp_err_t i2c_master_init(void)
 {
-
     i2c_config_t conf = {
         .mode = I2C_MODE_MASTER,
         .sda_io_num = I2C_MASTER_SDA_IO,
@@ -99,4 +98,5 @@ void app_main(void)
         }
         vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
+    
 }
