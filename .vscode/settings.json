@@ -16,6 +16,9 @@
     "idf.flashType": "UART",
     "idf.port": "/dev/ttyUSB1",
     "files.associations": {
-        "freertos.h": "c"
+        "freertos.h": "c",
+        "esp_system.h": "c",
+        "microros_transports.h": "c",
+        "config.h": "c"
     }
 }
