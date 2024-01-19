@@ -4,21 +4,6 @@
 #include "esp_system.h"
 #include "driver/i2c.h"
 
-#include <unistd.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "driver/uart.h"
-
-#include <rcl/rcl.h>
-#include <rcl/error_handling.h>
-#include <std_msgs/msg/int32.h>
-#include <rclc/rclc.h>
-#include <rclc/executor.h>
-
-#include <rmw_microxrcedds_c/config.h>
-#include <rmw_microros/rmw_microros.h>
-#include "microros_transports.h"
-
 #define I2C_MASTER_SDA_IO 18 // SDA GPIO_18
 #define I2C_MASTER_SCL_IO 19 // SCL GPIO_19
 #define I2C_MASTER_FREQ_HZ 100000 // master clock frequency
@@ -34,13 +19,7 @@
 #define ACK_VAL 0x0                            
 #define NACK_VAL 0x1        
 
-#define RCCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Aborting.\n",__LINE__,(int)temp_rc);vTaskDelete(NULL);}}
-#define RCSOFTCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Continuing.\n",__LINE__,(int)temp_rc);}}
-
 static const char *TAG = "i2c-master";
-
-rcl_publisher_t publisher;
-std_msgs__msg__Int32 msg;
 
 static esp_err_t i2c_master_init(void)
 {
