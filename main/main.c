@@ -4,6 +4,7 @@
 #include "esp_system.h"
 #include "driver/i2c.h"
 
+
 #define I2C_MASTER_SDA_IO 18 // SDA GPIO_18
 #define I2C_MASTER_SCL_IO 19 // SCL GPIO_19
 #define I2C_MASTER_FREQ_HZ 100000 // master clock frequency
@@ -79,7 +80,6 @@ void app_main(void)
     uint8_t ping = 0;
     uint8_t pong[255] = {0};
     ESP_ERROR_CHECK(i2c_master_init());
-    uint8_t data = 0;
 
   while(1)
     {
@@ -91,7 +91,6 @@ void app_main(void)
         {
             ESP_LOGI(TAG, "Received Data: %d", *pong);
             ping = *pong + 1;
-            data = ping;
         }
         else
         {

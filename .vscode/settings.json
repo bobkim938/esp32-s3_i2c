@@ -11,14 +11,7 @@
         "interface/ftdi/esp32_devkitj_v1.cfg",
         "target/esp32s3.cfg"
     ],
-    "idf.pythonBinPath": "/home/bob/.espressif/python_env/idf5.1_py3.10_env/bin/python",
-    "idf.toolsPath": "/home/bob/.espressif",
-    "idf.flashType": "UART",
     "idf.port": "/dev/ttyUSB1",
-    "files.associations": {
-        "freertos.h": "c",
-        "esp_system.h": "c",
-        "microros_transports.h": "c",
-        "config.h": "c"
-    }
+    "idf.pythonBinPath": "/home/bob/.espressif/python_env/idf5.1_py3.10_env/bin/python",
+    "idf.toolsPath": "/home/bob/.espressif"
 }
