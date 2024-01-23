@@ -9,7 +9,7 @@
 #include "driver/uart.h"
 #include <rcl/rcl.h>
 #include <rcl/error_handling.h>
-#include <std_msgs/msg/int8.h>
+#include <std_msgs/msg/int32.h>
 #include <rclc/rclc.h>
 #include <rclc/executor.h>
 #include <rmw_microxrcedds_c/config.h>
@@ -34,7 +34,7 @@ static const char *TAG = "i2c-master";
 
 rcl_publisher_t publisher;
 rclc_executor_t executor;
-std_msgs__msg__Int8 msg;
+std_msgs__msg__Int32 msg;
 
 void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
 {
@@ -55,7 +55,7 @@ void ROS_init(void* arg) {
     RCCHECK(rclc_node_init_default(&test_node, node_name, "", &support));
 
     const char* topic_name = "esp32_ping";
-    const rosidl_message_type_support_t * type_support = ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int8);
+    const rosidl_message_type_support_t * type_support = ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int32);
     // publisher init
     RCCHECK(rclc_publisher_init_default(&publisher, &test_node, type_support, topic_name));
     msg.data = 0;
