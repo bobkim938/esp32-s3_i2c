@@ -7,6 +7,7 @@
 #include "esp_log.h"
 #include "esp_system.h"
 #include "driver/uart.h"
+
 #include <rcl/rcl.h>
 #include <rcl/error_handling.h>
 #include <std_msgs/msg/int32.h>
@@ -15,6 +16,7 @@
 #include <rmw_microxrcedds_c/config.h>
 #include <rmw_microros/rmw_microros.h>
 #include "esp32_serial_transport.h"
+
 
 #define I2C_MASTER_SDA_IO 18 // SDA GPIO_18
 #define I2C_MASTER_SCL_IO 19 // SCL GPIO_19
