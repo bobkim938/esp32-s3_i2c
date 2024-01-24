@@ -25,13 +25,13 @@ int i2c_slave_port = 0;
 static esp_err_t i2c_slave_init(void)
 {
     i2c_config_t conf_slave = {
-        .sda_io_num = I2C_SLAVE_SDA_IO,          // select GPIO specific to your project
+        .sda_io_num = I2C_SLAVE_SDA_IO,          // SDA
         .sda_pullup_en = GPIO_PULLUP_ENABLE,
-        .scl_io_num = I2C_SLAVE_SCL_IO,          // select GPIO specific to your project
+        .scl_io_num = I2C_SLAVE_SCL_IO,          // SCL
         .scl_pullup_en = GPIO_PULLUP_ENABLE,
         .mode = I2C_MODE_SLAVE,
         .slave.addr_10bit_en = 0,
-        .slave.slave_addr = ESP_SLAVE_ADDR,      // address of your project
+        .slave.slave_addr = ESP_SLAVE_ADDR,      // address of ESP32_slave
         .clk_flags = 0,
     };
 
